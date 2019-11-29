@@ -1,0 +1,21 @@
+{
+  	"author": {
+		"name": "Anton Lebedev @antoinedze"
+  	},
+	"bugs": {
+		"url": "https://github.com/antoinedze/jfactory-expandable/issues"
+	},
+	"description": "JFactory Expandable module for cloning ui elements",
+	"homepage": "https://github.com/antoinedze/jfactory-expandable",
+	"license": "MIT",
+	"main": "index.js",
+	"name": "jfactory-expandable",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/antoinedze/jfactory-expandable.git"
+	},
+	"dependencies": {
+    	"jfactory": "^1.0.0"
+  	},
+	"version": "1.0.0"
+}
