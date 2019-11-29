@@ -15,7 +15,8 @@
 		"url": "git+https://github.com/antoinedze/jfactory-expandable.git"
 	},
 	"dependencies": {
-    	"jfactory": "^1.0.0"
+    	//"jfactory": "^1.0.0"
+    	"jfactory": "git+https://github.com/antoinedze/jfactory.git"
   	},
 	"version": "1.0.0"
 }
