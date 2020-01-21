@@ -21,16 +21,15 @@ module.exports = class Main extends React.Component {
         },
         ...props
       }),
-      Rows: props => this.state.data.map(key => {
-        let {Row} = this.context.dependents;
+      Rows: props => this.state.data.map((data, key) => {
+        let {Row} = this.context.dependents,
+          {removeButtonText, rowElement} = this.props;
         return React.createElement(Row, {
-          key,
-          element: this.props.element,
-          data: this.state.data[key],
+          key, data, removeButtonText, rowElement,
           onRowRemove: e => {
             this.removeRow(key);
           }
-        })
+        });
       }),
       AddButton: props => React.createElement('button', {
         ...{
@@ -49,7 +48,7 @@ module.exports = class Main extends React.Component {
   addRow(triggerEvents = true){
     let {onRowAdd} = this.props, event;
     
-    this.state.data.concat(this.emptyDataValue);
+    this.state.data = this.state.data.concat(this.emptyDataValue);
     this.setState(this.state);
     if(triggerEvents){
       event = this.context.trigger('rowAdd', this.state.data);
@@ -72,7 +71,7 @@ module.exports = class Main extends React.Component {
   
   get emptyDataValue(){
     switch(typeof(this.state.data[0])){
-      case 'object': return {}
+      case 'object': return {value: ''}
       case 'string': return ''
     }
   }

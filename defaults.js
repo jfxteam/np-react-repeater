@@ -3,15 +3,20 @@ const DefaultRenders = require.context('./renders', false, /\.jsx$/);
 
 module.exports = {
   options: {
-  	element: props => React.createElement('input', props),
+    rowElement: props => React.createElement('input', {
+      ...{
+        onChange: e => {}
+      },
+      ...props
+    }),
     data: [{value: 'Заполненное поле'}],
     addButtonText: 'Добавить',
     removeButtonText: 'Удалить',
-  	onRowAdd: null,
+    onRowAdd: null,
     onRowRemove: null,
   },
   renders: {
-    main: defaultRenders('./main.jsx'),
-    row: defaultRenders('./row.jsx'),
+    main: DefaultRenders('./main.jsx'),
+    row: DefaultRenders('./row.jsx'),
   }
 }

@@ -4,15 +4,18 @@ module.exports = class Row extends React.Component {
   constructor(props){
     super(props);
     
+    let {removeButtonText, onRowRemove, rowElement, data, index} = this.props;
+    
     this.localComponents = {
-      Element: props => React.createElement(this.props.element, {
+      Container: props => React.createElement('div', props),
+      Element: props => React.createElement(rowElement, {
         ...this.props.data,
         ...props
       }),
       RemoveButton: props => React.createElement('button', {
         ...{
-          onClick: this.props.onRowRemove.bind(this),
-          children: this.props.removeButtonText
+          onClick: onRowRemove.bind(this),
+          children: removeButtonText
         },
         ...props
       })
