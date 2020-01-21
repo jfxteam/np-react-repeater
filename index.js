@@ -1,52 +1,57 @@
-const JFactory = require('jfactory');
+'use strict';
 
-const config = require('./config.js');
-const defaults = require('./defaults.js');
-const elements = require('./elements.js');
+const React = require('react');
+const EventsHandler = require('wf-events-handler');
 
-module.exports = class Expandable extends JFactory.Module {
-	constructor(options){
-		super({config, defaults, elements, options});
-		
-		this.init();
-	}
-	
-	init(){
-		let values = this.options.dataFiller || this.defaults.dataFiller;
-		if(values)
-			this.fill(values);
-	}
-	
-	fill(values){
-		//this.createElement('rows');
-		values.map(data => {
-			if(data)
-				this.add(data);
-		});
-		
-		return this;
-	}
-	
-	add(data){
-		let element = this.options.element.call(this, data),
-			$element = this.createElement(element, {
-				parent: 'rows',
-				wrapper: this.getTemplate('row'),
-				renderMethod: 'append',
-			}),
-			$controlRemove = this.createElement('controlRemove', {
-				parent: $element.$wrapper.context,
-				renderMethod: 'append',
-			});
-		$controlRemove.target = $element;
-		return $element;
-	}
-	
-	remove($element){
-		$element.$wrapper.context.remove();
-		return $element;
-	}
+const Components = require.context('./components', false, /\.js$/);
+const Defaults = require('./defaults.js');
+
+const Main = Components('./main.js');
+const Row = Components('./row.js');
+
+class ReactRepeater extends React.Component {
+  constructor(props){
+    super(props); 
+    
+    this.ref = React.createRef();
+    
+    this.eventsHandler = new EventsHandler;
+      
+    let renders = {...this.constructor.defaultProps.renders, ...this.props.renders},
+      trigger = this.eventsHandler.trigger.bind(this.eventsHandler);
+    
+    Main.contextType = React.createContext({
+      ref: this.ref,
+      dependents: {Row},
+      render: renders.main,
+      trigger
+    });
+    
+    Row.contextType = React.createContext({
+      render: renders.row,
+      trigger
+    });
+  }
+  
+  componentDidMount(){
+    this.eventsHandler.setElement(this.ref.current);
+    ['on', 'off'].map(key => Object.defineProperty(this, key, {value: this.eventsHandler[key].bind(this.eventsHandler)}));
+  }
+  
+  render(){
+    let options = {...this.constructor.defaultProps.options, ...this.props.options};
+    return React.createElement(Main, options);
+  }
 }
+
+ReactRepeater.defaultProps = Defaults;
+
+module.exports = ReactRepeater;
+
+
+
+
+
 
 
 
