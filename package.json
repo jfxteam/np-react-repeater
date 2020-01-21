@@ -20,7 +20,7 @@
     "type": "git",
     "url": "git+https://github.com/antoinedze/wf-react-repeater.git"
   },
-  "version": "0.0.0",
+  "version": "0.0.1-0",
   "dependencies": {
     "react": "^16.12.0",
     "wf-events-handler": "^0.0.1-4"
