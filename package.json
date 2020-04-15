@@ -3,29 +3,29 @@
     "name": "Anton Lebedev @antoinedze"
   },
   "bugs": {
-    "url": "https://github.com/wf-team/npm-react-repeater/issues"
+    "url": "https://github.com/jfxteam/np-react-repeater/issues"
   },
   "description": "JavaScript React repeater module for cloning ui elements",
-  "homepage": "https://github.com/wf-team/npm-react-repeater",
+  "homepage": "https://github.com/jfxteam/np-react-repeater",
   "license": "MIT",
   "main": "index.js",
-  "name": "@wf-team/react-repeater",
+  "name": "@jfxteam/react-repeater",
   "scripts": {
     "deploy": "npm i add-dependencies -g && npm i npm-check-updates -g",
-    "fix-start": "ncu -u -n \"/^@wf-team.*$/\" && npm --no-git-tag-version version pre%fix-type% && npm publish",
-    "fix": "ncu -u -n \"/^@wf-team.*$/\" && npm --no-git-tag-version version prerelease && npm publish",
-    "fix-end": "ncu -u \"/^@wf-team.*$/\" && npm --no-git-tag-version version %fix-type% && npm publish"
+    "fix-start": "ncu -u -n \"/^@jfxteam.*$/\" && npm --no-git-tag-version version pre%fix-type% && npm publish",
+    "fix": "ncu -u -n \"/^@jfxteam.*$/\" && npm --no-git-tag-version version prerelease && npm publish",
+    "fix-end": "ncu -u \"/^@jfxteam.*$/\" && npm --no-git-tag-version version %fix-type% && npm publish"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wf-team/npm-react-repeater.git"
+    "url": "git+https://github.com/jfxteam/np-react-repeater.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/wf-team"
+    "registry": "https://npm.pkg.github.com/jfxteam"
   },
   "dependencies": {
-    "@wf-team/events-handler": "^0.0.1-0",
+    "@jfxteam/events-handler": "^0.0.1-1",
     "react": "^16.12.0"
   },
-  "version": "0.0.1-0"
+  "version": "0.0.1-1"
 }
