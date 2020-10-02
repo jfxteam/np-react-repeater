@@ -1,5 +1,6 @@
 const React = require('react');
-const DefaultRenders = require.context('./renders', false, /\.jsx$/);
+
+const renderComponents = require.context('./render-components', false, /\.js$/);
 
 module.exports = {
   options: {

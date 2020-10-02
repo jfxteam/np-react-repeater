@@ -1,6 +1,6 @@
 const React = require('react');
 
-module.exports = class Main extends React.Component {
+class Main extends React.PureComponent {
   constructor(props){
     super(props);
     
@@ -9,19 +9,19 @@ module.exports = class Main extends React.Component {
     }
     
     this.localComponents = {
-      Container: props => React.createElement('div', {
+      Container: React.memo(props => React.createElement('div', {
         ...{
           ref: this.context.ref
         },
         ...props
-      }),
-      Title: props => React.createElement('h1', {
+      })),
+      Title: React.memo(props => React.createElement('h1', {
         ...{
           children: this.props.title
         },
         ...props
-      }),
-      Rows: props => this.state.data.map((data, key) => {
+      })),
+      Rows: React.memo(props => this.state.data.map((data, key) => {
         let {Row} = this.context.dependents,
           {removeButtonText, rowElement} = this.props;
         return React.createElement(Row, {
@@ -30,19 +30,22 @@ module.exports = class Main extends React.Component {
             this.removeRow(key);
           }
         });
-      }),
-      AddButton: props => React.createElement('button', {
+      })),
+      AddButton: React.memo(props => React.createElement('button', {
         ...{
           onClick: this.addRow.bind(this),
           children: this.props.addButtonText
         },
         ...props
-      })
+      }))
     }
   }
   
   render(){
-    return this.context.render(this.localComponents, this.props);
+    return React.createElement(this.context.component, {
+      components: this.localComponents,
+      data: this.props
+    });
   }
   
   addRow(triggerEvents = true){
@@ -76,3 +79,5 @@ module.exports = class Main extends React.Component {
     }
   }
 }
+
+module.exports = Main;

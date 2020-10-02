@@ -1,7 +1,7 @@
 'use strict';
 
 const React = require('react');
-const EventsHandler = require('wf-events-handler');
+const EventsHandler = require('@jfxteam/dom-events-handler');
 
 const Components = require.context('./components', false, /\.js$/);
 const Defaults = require('./defaults.js');
@@ -9,7 +9,7 @@ const Defaults = require('./defaults.js');
 const Main = Components('./main.js');
 const Row = Components('./row.js');
 
-class ReactRepeater extends React.Component {
+class ReactRepeater extends React.PureComponent {
   constructor(props){
     super(props); 
     
@@ -17,18 +17,18 @@ class ReactRepeater extends React.Component {
     
     this.eventsHandler = new EventsHandler;
       
-    let renders = {...this.constructor.defaultProps.renders, ...this.props.renders},
+    let components = {...this.constructor.defaultProps.components, ...this.props.components},
       trigger = this.eventsHandler.trigger.bind(this.eventsHandler);
     
     Main.contextType = React.createContext({
       ref: this.ref,
       dependents: {Row},
-      render: renders.main,
+      component: components.main,
       trigger
     });
     
     Row.contextType = React.createContext({
-      render: renders.row,
+      component: components.row,
       trigger
     });
   }

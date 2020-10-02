@@ -1,28 +1,33 @@
 const React = require('react');
 
-module.exports = class Row extends React.Component {
+module.exports = class Row extends React.PureComponent {
   constructor(props){
     super(props);
     
-    let {removeButtonText, onRowRemove, rowElement, data, index} = this.props;
+    let {removeButtonText, onRowRemove, rowElement, data} = this.props;
+  
+    onRowRemove = onRowRemove.bind(this);
     
     this.localComponents = {
-      Container: props => React.createElement('div', props),
-      Element: props => React.createElement(rowElement, {
-        ...this.props.data,
+      Container: React.memo(props => React.createElement('div', props)),
+      Element: React.memo(props => React.createElement(rowElement, {
+        ...data,
         ...props
-      }),
-      RemoveButton: props => React.createElement('button', {
+      })),
+      RemoveButton: React.memo(props => React.createElement('button', {
         ...{
-          onClick: onRowRemove.bind(this),
+          onClick: onRowRemove,
           children: removeButtonText
         },
         ...props
-      })
+      }))
     }
   }
   
   render(){
-    return this.context.render(this.localComponents, this.props);
+    return React.createElement(this.context.component, {
+      components: this.localComponents,
+      data: this.props
+    });
   }
 }
