@@ -16,8 +16,8 @@ module.exports = {
     onRowAdd: null,
     onRowRemove: null,
   },
-  renders: {
-    main: DefaultRenders('./main.jsx'),
-    row: DefaultRenders('./row.jsx'),
+  components: {
+    main: renderComponents('./main.js'),
+    row: renderComponents('./row.js'),
   }
 }
