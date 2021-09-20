@@ -27,5 +27,5 @@
     "@jfxteam/dom-events-handler": "^1.0.1",
     "react": "^16.12.0"
   },
-  "version": "0.0.1-3"
+  "version": "0.0.1-13"
 }

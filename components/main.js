@@ -52,24 +52,26 @@ class Main extends React.PureComponent {
     let {onRowAdd} = this.props, event;
     
     this.state.data = this.state.data.concat(this.emptyDataValue);
-    this.setState(this.state);
-    if(triggerEvents){
-      event = this.context.trigger('rowAdd', this.state.data);
-      if(typeof(onRowAdd) === 'function' && !event.defaultPrevented)
-        onRowAdd(event);
-    }
+    this.setState(this.state, () => {
+      if(triggerEvents){
+        event = this.context.trigger('rowAdd', this.state.data);
+        if(typeof(onRowAdd) === 'function' && !event.defaultPrevented)
+          onRowAdd(event);
+      }
+    });
   }
 
   removeRow(index, triggerEvents = true){
     let {onRowRemove} = this.props, event;
     
     this.state.data.splice(index, 1);
-    this.setState(this.state);
-    if(triggerEvents){
-      event = this.context.trigger('rowRemove', this.state.data);
-      if(typeof(onRowRemove) === 'function' && !event.defaultPrevented)
-        onRowRemove(event);
-    }
+    this.setState(this.state, () => {
+      if(triggerEvents){
+        event = this.context.trigger('rowRemove', this.state.data);
+        if(typeof(onRowRemove) === 'function' && !event.defaultPrevented)
+          onRowRemove(event);
+      }
+    });
   }
   
   get emptyDataValue(){
