@@ -4,22 +4,15 @@ module.exports = class Row extends React.PureComponent {
   constructor(props){
     super(props);
     
-    let {removeButtonText, onRowRemove, rowElement, data} = this.props;
-  
-    onRowRemove = onRowRemove.bind(this);
+    let {rowElement} = this.props;
     
     this.localComponents = {
       Container: React.memo(props => React.createElement('div', props)),
-      Element: React.memo(props => React.createElement(rowElement, {
-        ...data,
-        ...props
-      })),
-      RemoveButton: React.memo(props => React.createElement('button', {
-        ...{
-          onClick: onRowRemove,
-          children: removeButtonText
-        },
-        ...props
+      Element: React.memo(props => React.createElement(rowElement, props)),
+      RemoveButton: React.memo(props => React.createElement(props.removeButtonType, {
+        className: props.removeButtonClassName,
+        onClick: e => props.removeRow(),
+        children: props.children
       }))
     }
   }
@@ -27,7 +20,7 @@ module.exports = class Row extends React.PureComponent {
   render(){
     return React.createElement(this.context.component, {
       components: this.localComponents,
-      data: this.props
+      props: {...this.props, ...this.state}
     });
   }
 }

@@ -10,33 +10,39 @@ class Main extends React.PureComponent {
     
     this.localComponents = {
       Container: React.memo(props => React.createElement('div', {
-        ...{
-          ref: this.context.ref
-        },
-        ...props
+        ref: this.context.ref,
+        children: props.children
       })),
       Title: React.memo(props => React.createElement('h1', {
-        ...{
-          children: this.props.title
-        },
-        ...props
+        children: props.children
       })),
-      Rows: React.memo(props => this.state.data.map((data, key) => {
-        let {Row} = this.context.dependents,
-          {removeButtonText, rowElement} = this.props;
-        return React.createElement(Row, {
-          key, data, removeButtonText, rowElement,
-          onRowRemove: e => {
-            this.removeRow(key);
-          }
-        });
-      })),
-      AddButton: React.memo(props => React.createElement('button', {
-        ...{
-          onClick: this.addRow.bind(this),
-          children: this.props.addButtonText
-        },
-        ...props
+      Rows: React.memo(props => {
+        let realIndex = 0;
+        return props.data.map((data, key) => {
+          let {Row} = this.context.dependents,
+            {removeButtonType, removeButtonClassName, removeButtonText, rowClassName, rowElement, rowElementProps} = props;
+          
+          return React.createElement(Row, {
+            key,
+            _key: key,
+            index: realIndex++,
+            data,
+            removeButtonType,
+            removeButtonClassName,
+            removeButtonText,
+            rowClassName,
+            rowElement,
+            rowElementProps,
+            removeRow: () => {
+              this.removeRow(key);
+            }
+          });
+        })
+      }),
+      AddButton: React.memo(props => React.createElement(props.addButtonType, {
+        className: props.addButtonClassName,
+        onClick: e => this.addRow(),
+        children: props.children
       }))
     }
   }
@@ -44,15 +50,15 @@ class Main extends React.PureComponent {
   render(){
     return React.createElement(this.context.component, {
       components: this.localComponents,
-      data: this.props
+      props: {...this.props, ...this.state}
     });
   }
   
   addRow(triggerEvents = true){
     let {onRowAdd} = this.props, event;
     
-    this.state.data = this.state.data.concat(this.emptyDataValue);
-    this.setState(this.state, () => {
+    let data = this.state.data.concat(null);
+    this.setState({...this.state, ...{data}}, () => {
       if(triggerEvents){
         event = this.context.trigger('rowAdd', this.state.data);
         if(typeof(onRowAdd) === 'function' && !event.defaultPrevented)
@@ -60,25 +66,20 @@ class Main extends React.PureComponent {
       }
     });
   }
-
+  
   removeRow(index, triggerEvents = true){
     let {onRowRemove} = this.props, event;
     
-    this.state.data.splice(index, 1);
-    this.setState(this.state, () => {
+    let data = [].concat(this.state.data);
+    delete data[index];
+    
+    this.setState({...this.state, ...{data}}, () => {
       if(triggerEvents){
         event = this.context.trigger('rowRemove', this.state.data);
         if(typeof(onRowRemove) === 'function' && !event.defaultPrevented)
           onRowRemove(event);
       }
     });
-  }
-  
-  get emptyDataValue(){
-    switch(typeof(this.state.data[0])){
-      case 'object': return {value: ''}
-      case 'string': return ''
-    }
   }
 }
 

@@ -11,12 +11,12 @@ const Row = Components('./row.js');
 
 class ReactRepeater extends React.PureComponent {
   constructor(props){
-    super(props); 
+    super(props);
     
     this.ref = React.createRef();
     
     this.eventsHandler = new EventsHandler;
-      
+    
     let components = {...this.constructor.defaultProps.components, ...this.props.components},
       trigger = this.eventsHandler.trigger.bind(this.eventsHandler);
     
